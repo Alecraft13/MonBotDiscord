@@ -5,7 +5,15 @@ import discord
 load_dotenv()  # Charge le fichier .env
 TOKEN = os.getenv('TOKEN')  # Récupère le token
 
-client = discord.Client()
+client = discord.Client(intents=intents)
+
+import discord
+
+intents = discord.Intents.default()
+# Si tu veux que ton bot lise les messages :
+intents.message_content = True
+
+client = discord.Client(intents=intents)
 
 @client.event
 async def on_ready():
