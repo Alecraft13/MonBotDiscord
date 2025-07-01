@@ -1,12 +1,18 @@
 import os
 from dotenv import load_dotenv
+import discord
 
-load_dotenv()  # Charge ton .env
+load_dotenv()  # Charge le fichier .env
+TOKEN = os.getenv('DISCORD_TOKEN')  # Récupère le token
 
-TOKEN = os.getenv("TOKEN")
+client = discord.Client()
 
-# Lancer le bot
-bot.run(TOKEN)
+@client.event
+async def on_ready():
+    print(f'Connecté en tant que {client.user}')  # Confirme la connexion
+
+client.run(TOKEN)  # Lance le bot
+
 
 import discord
 from discord.ext import commands
