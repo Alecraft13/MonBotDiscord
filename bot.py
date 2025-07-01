@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import discord
 
 load_dotenv()  # Charge le fichier .env
-TOKEN = os.getenv('DISCORD_TOKEN')  # Récupère le token
+TOKEN = os.getenv('TOKEN')  # Récupère le token
 
 client = discord.Client()
 
