@@ -1,72 +1,43 @@
 import os
 from dotenv import load_dotenv
 import discord
-
-load_dotenv()  # Charge le fichier .env
-TOKEN = os.getenv('TOKEN')  # Récupère le token
-
-client = discord.Client(intents=intents)
-
-import discord
-
-intents = discord.Intents.default()
-# Si tu veux que ton bot lise les messages :
-intents.message_content = True
-
-client = discord.Client(intents=intents)
-
-@client.event
-async def on_ready():
-    print(f'Connecté en tant que {client.user}')  # Confirme la connexion
-
-client.run(TOKEN)  # Lance le bot
-
-
-import discord
 from discord.ext import commands
 import sqlite3
+
+# ➜ Charge les variables d'environnement
+load_dotenv()
+TOKEN = os.getenv('TOKEN')
 
 # ➜ Déclare les intents
 intents = discord.Intents.default()
 intents.message_content = True
+intents.members = True  # Si tu gères les membres
 
 # ➜ Crée ton bot avec les intents
 bot = commands.Bot(command_prefix='!', intents=intents)
 
-DB = 'config.db'
+DB = 'config.db'  # Ta base SQLite
 
 @bot.event
 async def on_ready():
     print(f'✅ Connecté en tant que {bot.user}')
 
+# ➜ Commande !annonce
 @bot.command()
 async def annonce(ctx):
     conn = sqlite3.connect(DB)
     c = conn.cursor()
     c.execute('SELECT announcement_message FROM config WHERE id = 1')
-    message = c.fetchone()[0]
+    result = c.fetchone()
+    if result:
+        await ctx.send(result[0])
+    else:
+        await ctx.send("❌ Aucun message d'annonce trouvé.")
     conn.close()
-
-    await ctx.send(message)
-
-bot.run('TOKEN')
-
-import discord
-from discord.ext import commands
-
-intents = discord.Intents.default()
-intents.message_content = True
-intents.members = True  # Important pour gérer les membres
-
-bot = commands.Bot(command_prefix='!', intents=intents)
-
-@bot.event
-async def on_ready():
-    print(f'✅ Connecté en tant que {bot.user}')
 
 # ➜ Commande !mute
 @bot.command()
-@commands.has_permissions(manage_roles=True)  # Seulement pour les modérateurs/admins
+@commands.has_permissions(manage_roles=True)
 async def mute(ctx, member: discord.Member, *, reason=None):
     role = discord.utils.get(ctx.guild.roles, name="Muted")
     if not role:
@@ -88,5 +59,5 @@ async def unmute(ctx, member: discord.Member):
     await member.remove_roles(role)
     await ctx.send(f"🔊 {member.mention} a été unmute.")
 
-bot.run('TOKEN')
-
+# ➜ Lance le bot
+bot.run(TOKEN)
