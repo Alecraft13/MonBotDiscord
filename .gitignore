@@ -1,0 +1,30 @@
+# 👉 Ignore les fichiers de cache Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 👉 Ignore l'environnement virtuel (si tu utilises venv)
+venv/
+ENV/
+env/
+
+# 👉 Ignore les fichiers secrets (variables d'environnement)
+.env
+*.env
+
+# 👉 Ignore les fichiers système (Windows, macOS)
+.DS_Store
+Thumbs.db
+
+# 👉 Ignore logs ou bases de données locales (si tu en as plus tard)
+*.log
+*.sqlite3
+
+# 👉 Ignore node_modules si jamais tu ajoutes un frontend
+node_modules/
+
+# 👉 Ignore archives ou backups
+*.zip
+*.tar.gz
+*.rar
